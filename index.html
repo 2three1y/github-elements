@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Elements playground</title>
+<meta name="description" content="Live, keyboard-friendly demos of GitHub's 17 open-source web components.">
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="demo.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the demos</a>
+<header class="top">
+  <h1>GitHub Elements playground</h1>
+  <p>All 17 of GitHub's open-source web components, each with a live demo you can try with a keyboard or screen reader. I'm using it to pick which ones fit Looscid.</p>
+  <p class="hint">Anything that normally talks to a server is faked inside this page. Nothing you type is sent anywhere.</p>
+</header>
+<nav aria-labelledby="nav-h">
+  <h2 id="nav-h">Components</h2>
+  <ul class="toc"><li><a href="#auto-check">auto-check</a></li><li><a href="#auto-complete">auto-complete</a></li><li><a href="#clipboard-copy">clipboard-copy</a></li><li><a href="#details-dialog">details-dialog</a></li><li><a href="#details-menu">details-menu</a></li><li><a href="#file-attachment">file-attachment</a></li><li><a href="#filter-input">filter-input</a></li><li><a href="#g-emoji">g-emoji</a></li><li><a href="#image-crop">image-crop</a></li><li><a href="#include-fragment">include-fragment</a></li><li><a href="#markdown-toolbar">markdown-toolbar</a></li><li><a href="#relative-time">relative-time</a></li><li><a href="#remote-input">remote-input</a></li><li><a href="#tab-container">tab-container</a></li><li><a href="#task-lists">task-lists</a></li><li><a href="#text-expander">text-expander</a></li><li><a href="#typing-effect">typing-effect</a></li></ul>
+</nav>
+<main id="main" tabindex="-1">
+
+<section aria-labelledby="h-auto-check" class="comp" id="auto-check">
+  <h2 id="h-auto-check">auto-check</h2>
+  <p class="desc">Checks what you type against a server, like seeing if a username is free, when you leave the field.</p>
+  <div class="demo" id="demo-auto-check">
+<auto-check src="mock/api/check-username" csrf="demo-token" required>
+  <label for="ac-input">Pick a username</label>
+  <input id="ac-input" type="text" aria-describedby="ac-hint ac-msg">
+</auto-check>
+<p id="ac-hint" class="hint">Type a name, then press Tab to leave the field. Taken names: hubot, octocat, admin, looscid.</p>
+<p id="ac-msg" class="result">Nothing checked yet.</p>
+  </div>
+  <h3 id="sr-auto-check">Screen reader notes</h3>
+  <ul class="notes"><li>The check runs when focus leaves the field (after the first error, it rechecks as you type).</li><li>It only sets the field's validity. It doesn't announce anything by itself, so this demo writes the result in text linked to the field and sends it to the page's one status message.</li><li>The input is a normal text field; the component just turns off autocomplete and spellcheck on it.</li></ul>
+</section>
+<section aria-labelledby="h-auto-complete" class="comp" id="auto-complete">
+  <h2 id="h-auto-complete">auto-complete</h2>
+  <p class="desc">A text field that shows suggestions from a server as you type, and you pick one.</p>
+  <div class="demo" id="demo-auto-complete">
+<auto-complete src="mock/api/robots" for="robots-popup">
+  <label for="robots-input" id="robots-label">Search robots</label>
+  <input id="robots-input" name="robots-input" type="text">
+  <button id="robots-input-clear" type="button">Clear</button>
+  <ul id="robots-popup"></ul>
+</auto-complete>
+<p id="acp-msg" class="result">Nothing picked yet.</p>
+  </div>
+  <h3 id="sr-auto-complete">Screen reader notes</h3>
+  <ul class="notes"><li>The field becomes a combobox with a listbox popup. Up and Down arrows move through options, Enter picks, Escape closes.</li><li>The highlighted option is tracked with aria-activedescendant, so focus stays in the field while you arrow.</li><li>It can add its own polite live region that reads out the number of results. I left that out to keep one status message per page, and this demo announces the count there instead.</li><li>Has a real Clear button (keyboard reachable) instead of the browser's mouse-only x. Gotcha: it names that button "clear:" plus the field's label, but it finds the label by the input's name, not its id. Without a matching name and a label id, VoiceOver just hears "clear:".</li></ul>
+</section>
+<section aria-labelledby="h-clipboard-copy" class="comp" id="clipboard-copy">
+  <h2 id="h-clipboard-copy">clipboard-copy</h2>
+  <p class="desc">A button that copies text to the clipboard.</p>
+  <div class="demo" id="demo-clipboard-copy">
+<label for="copy-src">Text to copy</label>
+<input id="copy-src" type="text" value="Looscid is built for VoiceOver first.">
+<clipboard-copy for="copy-src" class="btn">Copy</clipboard-copy>
+<label for="copy-paste">Paste here to check</label>
+<textarea id="copy-paste" rows="2"></textarea>
+  </div>
+  <h3 id="sr-clipboard-copy">Screen reader notes</h3>
+  <ul class="notes"><li>It isn't a real button element, but it gives itself role button and a tab stop, and Enter or Space activates it.</li><li>It doesn't say anything after copying. This demo announces "Copied" through the page's status message.</li></ul>
+</section>
+<section aria-labelledby="h-details-dialog" class="comp" id="details-dialog">
+  <h2 id="h-details-dialog">details-dialog</h2>
+  <p class="desc">A pop-up dialog built on a disclosure (details and summary), so it opens without much script.</p>
+  <div class="demo" id="demo-details-dialog">
+<details class="dialog-details">
+  <summary class="btn">Open the dialog</summary>
+  <details-dialog aria-labelledby="dlg-title" class="dialog">
+    <h3 id="dlg-title">Hi from the dialog</h3>
+    <p>Focus moved in here. Tab stays inside until you close it.</p>
+    <label for="dlg-input">Your favorite relay</label>
+    <input id="dlg-input" type="text">
+    <button type="button" class="btn" data-close-dialog>Close</button>
+  </details-dialog>
+</details>
+  </div>
+  <h3 id="sr-details-dialog">Screen reader notes</h3>
+  <ul class="notes"><li>When it opens it gets role dialog and aria-modal, moves focus inside and traps Tab there. Escape or the Close button closes it and focus goes back to the opener.</li><li>The opener is a summary, so VoiceOver may say "collapsed" or "expanded" on it like a disclosure.</li></ul>
+</section>
+<section aria-labelledby="h-details-menu" class="comp" id="details-menu">
+  <h2 id="h-details-menu">details-menu</h2>
+  <p class="desc">A drop-down menu built on a disclosure (details and summary).</p>
+  <div class="demo" id="demo-details-menu">
+<details class="menu-details">
+  <summary class="btn">Favorite robot: <span data-menu-button>None</span></summary>
+  <details-menu role="menu" class="menu" aria-label="Robots">
+    <button type="button" role="menuitemradio" aria-checked="false" data-menu-button-text>Hubot</button>
+    <button type="button" role="menuitemradio" aria-checked="false" data-menu-button-text>Bender</button>
+    <button type="button" role="menuitemradio" aria-checked="false" data-menu-button-text>BB-8</button>
+    <button type="button" role="menuitemradio" aria-checked="false" data-menu-button-text>WALL-E</button>
+  </details-menu>
+</details>
+  </div>
+  <h3 id="sr-details-menu">Screen reader notes</h3>
+  <ul class="notes"><li>Opening it (Enter or Space on the summary) moves focus to the first item. Up and Down arrows move, Enter picks, Escape closes and returns focus.</li><li>The summary gets aria-haspopup. Picked items get aria-checked, and the summary text updates to the choice.</li></ul>
+</section>
+<section aria-labelledby="h-file-attachment" class="comp" id="file-attachment">
+  <h2 id="h-file-attachment">file-attachment</h2>
+  <p class="desc">Accepts files dropped on it or picked with a file input, and hands them to your code to upload.</p>
+  <div class="demo" id="demo-file-attachment">
+<file-attachment input="file-in" class="dropzone">
+  <label for="file-in">Choose files (or drop them here)</label>
+  <input id="file-in" type="file" multiple>
+</file-attachment>
+<p class="hint">Nothing is uploaded. The demo only lists the names.</p>
+<h3 id="files-h" class="visually-hidden">Chosen files</h3>
+<ul id="file-list" aria-labelledby="files-h"><li>No files yet.</li></ul>
+  </div>
+  <h3 id="sr-file-attachment">Screen reader notes</h3>
+  <ul class="notes"><li>The drop area itself has no role or keyboard support. The file input inside it is the keyboard and screen reader way in, and it works like any file picker.</li><li>It doesn't announce anything. This demo lists the files and announces the count.</li></ul>
+</section>
+<section aria-labelledby="h-filter-input" class="comp" id="filter-input">
+  <h2 id="h-filter-input">filter-input</h2>
+  <p class="desc">A search box that hides items in a list that don't match what you type.</p>
+  <div class="demo" id="demo-filter-input">
+<filter-input aria-owns="filter-robots">
+  <label for="filter-in">Filter robots</label>
+  <input id="filter-in" type="text" autocomplete="off">
+</filter-input>
+<div id="filter-robots">
+  <ul data-filter-list class="plain-list">
+    <li>Bender</li><li>Hubot</li><li>WALL-E</li><li>BB-8</li><li>R2-D2</li><li>C-3PO</li><li>Data</li><li>Baymax</li>
+  </ul>
+  <p data-filter-empty-state hidden>No robots match that.</p>
+</div>
+  </div>
+  <h3 id="sr-filter-input">Screen reader notes</h3>
+  <ul class="notes"><li>Non-matching items are hidden, so VoiceOver skips them and list counts update.</li><li>It doesn't announce the number of matches. This demo announces "X of 8 robots shown".</li></ul>
+</section>
+<section aria-labelledby="h-g-emoji" class="comp" id="g-emoji">
+  <h2 id="h-g-emoji">g-emoji</h2>
+  <p class="desc">Wraps an emoji so old browsers that can't draw it get an image instead, and can change skin tone.</p>
+  <div class="demo" id="demo-g-emoji">
+<p class="emoji-row"><g-emoji alias="waving hand" id="wave">👋</g-emoji> <g-emoji alias="rocket">🚀</g-emoji> <g-emoji alias="purple heart">💜</g-emoji></p>
+<p id="tone-label">Skin tone for the wave:</p>
+<div role="group" aria-labelledby="tone-label" class="row">
+  <button type="button" class="btn" data-tone="0">Default</button>
+  <button type="button" class="btn" data-tone="1">Light</button>
+  <button type="button" class="btn" data-tone="2">Medium light</button>
+  <button type="button" class="btn" data-tone="3">Medium</button>
+  <button type="button" class="btn" data-tone="4">Medium dark</button>
+  <button type="button" class="btn" data-tone="5">Dark</button>
+</div>
+  </div>
+  <h3 id="sr-g-emoji">Screen reader notes</h3>
+  <ul class="notes"><li>On modern browsers it does nothing visible; the emoji is just text, so VoiceOver reads its normal name ("waving hand").</li><li>The image fallback only kicks in on browsers without emoji support, and needs image files. This demo has none, so the fallback isn't shown.</li><li>Changing tone swaps the character, so the new name (like "waving hand, medium skin tone") is read when you move to it.</li></ul>
+</section>
+<section aria-labelledby="h-image-crop" class="comp" id="image-crop">
+  <h2 id="h-image-crop">image-crop</h2>
+  <p class="desc">Lets you drag or nudge a square crop box over an image and gives back x, y, width and height.</p>
+  <div class="demo" id="demo-image-crop">
+<image-crop src="img/crop-sample.png" id="cropper" class="cropper" tabindex="0" role="group" aria-label="Crop box" aria-describedby="crop-hint crop-msg">
+  <input type="hidden" data-image-crop-input="x">
+  <input type="hidden" data-image-crop-input="y">
+  <input type="hidden" data-image-crop-input="width">
+  <input type="hidden" data-image-crop-input="height">
+</image-crop>
+<p class="hint" id="crop-hint">With the crop box focused: arrow keys move it, minus and equals make it smaller or bigger, Escape resets.</p>
+<p id="crop-msg" class="result">Crop: not moved yet.</p>
+  </div>
+  <h3 id="sr-image-crop">Screen reader notes</h3>
+  <ul class="notes"><li>The component isn't focusable by itself, even though it listens for keys. This demo adds a tab stop and a label so keyboard cropping works.</li><li>Arrow keys move the box 1 pixel per press (slow), minus and equals resize by 10, Escape resets.</li><li>The image inside has empty alt text and the box has no role, so a screen reader gets nothing about the crop on its own. This demo writes the numbers below the image and announces them once you stop moving.</li><li>On iPhone with VoiceOver and no keyboard, dragging is the only way to move it. Limited for blind users.</li></ul>
+</section>
+<section aria-labelledby="h-include-fragment" class="comp" id="include-fragment">
+  <h2 id="h-include-fragment">include-fragment</h2>
+  <p class="desc">A placeholder that loads a piece of HTML from a URL and swaps itself out for it.</p>
+  <div class="demo" id="demo-include-fragment">
+<button type="button" class="btn" id="frag-btn">Load the fragment</button>
+<div id="frag-slot"></div>
+  </div>
+  <h3 id="sr-include-fragment">Screen reader notes</h3>
+  <ul class="notes"><li>Its loading text is whatever you put inside. When the HTML arrives it replaces itself, and focus doesn't move.</li><li>It doesn't announce the new content. This demo announces "Fragment loaded"; the new text sits right after the button.</li></ul>
+</section>
+<section aria-labelledby="h-markdown-toolbar" class="comp" id="markdown-toolbar">
+  <h2 id="h-markdown-toolbar">markdown-toolbar</h2>
+  <p class="desc">A row of formatting buttons (bold, link, list…) that insert Markdown into a text box.</p>
+  <div class="demo" id="demo-markdown-toolbar">
+<markdown-toolbar for="md-text" aria-label="Formatting" class="toolbar">
+  <md-bold class="btn">Bold</md-bold>
+  <md-italic class="btn">Italic</md-italic>
+  <md-header class="btn">Heading</md-header>
+  <md-quote class="btn">Quote</md-quote>
+  <md-code class="btn">Code</md-code>
+  <md-link class="btn">Link</md-link>
+  <md-unordered-list class="btn">Bulleted list</md-unordered-list>
+  <md-ordered-list class="btn">Numbered list</md-ordered-list>
+  <md-task-list class="btn">Task list</md-task-list>
+  <md-mention class="btn">Mention</md-mention>
+</markdown-toolbar>
+<label for="md-text">Write something</label>
+<textarea id="md-text" rows="4">Select some of this text, then press Bold.</textarea>
+  </div>
+  <h3 id="sr-markdown-toolbar">Screen reader notes</h3>
+  <ul class="notes"><li>The toolbar gets role toolbar and is one tab stop: Left and Right arrows move between buttons, Home and End jump to the ends.</li><li>Each item gets role button. Pressing one changes the text box but doesn't announce what changed, so you'd check the text yourself.</li></ul>
+</section>
+<section aria-labelledby="h-relative-time" class="comp" id="relative-time">
+  <h2 id="h-relative-time">relative-time</h2>
+  <p class="desc">Shows a date as "5 minutes ago" or "in 2 days" and keeps it up to date.</p>
+  <div class="demo" id="demo-relative-time">
+<ul class="plain-list" id="rt-list">
+  <li>Five minutes back: <relative-time id="rt-5m" datetime="2026-01-01T00:00:00Z">January 1, 2026</relative-time></li>
+  <li>Three hours back: <relative-time id="rt-3h" datetime="2026-01-01T00:00:00Z">January 1, 2026</relative-time></li>
+  <li>Two days back: <relative-time id="rt-2d" datetime="2026-01-01T00:00:00Z">January 1, 2026</relative-time></li>
+  <li>Ten minutes ahead: <relative-time id="rt-in" datetime="2026-01-01T00:00:00Z">January 1, 2026</relative-time></li>
+  <li>As a duration: <relative-time id="rt-dur" format="duration" datetime="2026-01-01T00:00:00Z">January 1, 2026</relative-time></li>
+</ul>
+  </div>
+  <h3 id="sr-relative-time">Screen reader notes</h3>
+  <ul class="notes"><li>In Chrome's accessibility tree the visible text (like "5 minutes ago") is exposed as normal text, and the element also gets the full date as its name from its title. Some screen readers may read the date instead of, or as well as, "5 minutes ago".</li><li>It updates itself as time passes, quietly, with no announcements.</li><li>The full date is in a title attribute, which VoiceOver usually doesn't read. Without JavaScript the text inside the tag (here the full date) shows instead.</li></ul>
+</section>
+<section aria-labelledby="h-remote-input" class="comp" id="remote-input">
+  <h2 id="h-remote-input">remote-input</h2>
+  <p class="desc">Sends what you type to a server and puts the HTML it sends back on the page, like a live Markdown preview.</p>
+  <div class="demo" id="demo-remote-input">
+<remote-input src="mock/api/preview" aria-owns="md-preview" param="body">
+  <label for="ri-text">Type Markdown (try **bold** or *italic*)</label>
+  <textarea id="ri-text" rows="3"></textarea>
+</remote-input>
+<p class="hint">Preview:</p>
+<div id="md-preview" class="preview"><p>Nothing yet.</p></div>
+  </div>
+  <h3 id="sr-remote-input">Screen reader notes</h3>
+  <ul class="notes"><li>The preview is updated quietly; nothing is announced (on purpose, it would talk on every keystroke). Move to the preview to read it.</li><li>It adds a loading attribute while waiting, which you could use for a visual spinner.</li></ul>
+</section>
+<section aria-labelledby="h-tab-container" class="comp" id="tab-container">
+  <h2 id="h-tab-container">tab-container</h2>
+  <p class="desc">Accessible tabs: a row of tab buttons that switch between panels.</p>
+  <div class="demo" id="demo-tab-container">
+<tab-container>
+  <div role="tablist" aria-label="Demo tabs" class="tabs">
+    <button type="button" id="tab-notes" role="tab" aria-selected="true">Notes</button>
+    <button type="button" id="tab-replies" role="tab" tabindex="-1">Replies</button>
+    <button type="button" id="tab-zaps" role="tab" tabindex="-1">Zaps</button>
+  </div>
+  <div role="tabpanel" aria-labelledby="tab-notes" class="panel"><p>Notes panel. Short thoughts go here.</p></div>
+  <div role="tabpanel" aria-labelledby="tab-replies" class="panel" hidden><p>Replies panel. Conversations go here.</p></div>
+  <div role="tabpanel" aria-labelledby="tab-zaps" class="panel" hidden><p>Zaps panel. Tips go here.</p></div>
+</tab-container>
+  </div>
+  <h3 id="sr-tab-container">Screen reader notes</h3>
+  <ul class="notes"><li>Follows the standard tabs pattern: one tab stop for the tab row, Left and Right arrows (and Home and End) switch tabs right away, then Tab moves into the panel.</li><li>Tabs report "selected" and position (like "tab, 2 of 3").</li></ul>
+</section>
+<section aria-labelledby="h-task-lists" class="comp" id="task-lists">
+  <h2 id="h-task-lists">task-lists</h2>
+  <p class="desc">Checkbox to-do lists (like on GitHub) that report check changes and can be reordered by dragging.</p>
+  <div class="demo" id="demo-task-lists">
+<task-lists sortable>
+  <ul class="contains-task-list">
+    <li class="task-list-item"><label><input type="checkbox" class="task-list-item-checkbox"> Fix the reply button label</label></li>
+    <li class="task-list-item"><label><input type="checkbox" class="task-list-item-checkbox" checked> Add dark mode</label></li>
+    <li class="task-list-item"><label><input type="checkbox" class="task-list-item-checkbox"> Test with braille display</label></li>
+  </ul>
+</task-lists>
+  </div>
+  <h3 id="sr-task-lists">Screen reader notes</h3>
+  <ul class="notes"><li>The checkboxes are normal checkboxes: Space toggles them, and the component fires an event (this demo announces "checked" or "unchecked").</li><li>Reordering is drag only. The drag handles it adds are hidden from screen readers and there's no keyboard way to move items. Limited.</li><li>I wrapped each item's text in a label so each checkbox has a name. The component still worked.</li></ul>
+</section>
+<section aria-labelledby="h-text-expander" class="comp" id="text-expander">
+  <h2 id="h-text-expander">text-expander</h2>
+  <p class="desc">Pops up suggestions when you type a trigger like @ or : in a text box, for mentions and emoji.</p>
+  <div class="demo" id="demo-text-expander">
+<text-expander keys=": @">
+  <label for="te-text">Type @ for people or : for emoji (try @ja or :ro)</label>
+  <textarea id="te-text" rows="3"></textarea>
+</text-expander>
+  </div>
+  <h3 id="sr-text-expander">Screen reader notes</h3>
+  <ul class="notes"><li>The text box becomes a combobox while the menu is open. Up and Down arrows move, Enter or Tab inserts, Escape closes.</li><li>It does not announce how many suggestions there are, and VoiceOver support for aria-activedescendant inside a textarea can be patchy. Worth testing on your phone.</li></ul>
+</section>
+<section aria-labelledby="h-typing-effect" class="comp" id="typing-effect">
+  <h2 id="h-typing-effect">typing-effect</h2>
+  <p class="desc">Types out lines of text letter by letter, like someone typing.</p>
+  <div class="demo" id="demo-typing-effect">
+<typing-effect id="typer" data-lines='["Hey, I am testing GitHub components.", "Pick the ones you like."]'>
+  <span data-target="typing-effect.content"></span><span data-target="typing-effect.cursor" aria-hidden="true">|</span>
+</typing-effect>
+<p><button type="button" class="btn" id="type-again">Type it again</button></p>
+  </div>
+  <h3 id="sr-typing-effect">Screen reader notes</h3>
+  <ul class="notes"><li>The text appears letter by letter but isn't a live region, so VoiceOver doesn't read each letter. Read it after it finishes.</li><li>If Reduce Motion is on, the text just appears at once.</li><li>The blinking cursor is hidden from screen readers in this demo.</li></ul>
+</section>
+<section aria-labelledby="h-credits" class="comp" id="credits">
+  <h2 id="h-credits">Credits</h2>
+  <p>Every component here is made by <a href="https://github.com/github">GitHub</a> and shared under the MIT license. The built code is copied into this repo from npm (no CDNs), with each license kept next to it.</p>
+  <ul class="plain-list"><li><a href="https://github.com/github/auto-check-element">@github/auto-check-element</a> 6.0.0, <a href="vendor/licenses/auto-check-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/auto-complete-element">@github/auto-complete-element</a> 3.8.0, <a href="vendor/licenses/auto-complete-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/clipboard-copy-element">@github/clipboard-copy-element</a> 1.3.2, <a href="vendor/licenses/clipboard-copy-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/details-dialog-element">@github/details-dialog-element</a> 3.1.4, <a href="vendor/licenses/details-dialog-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/details-menu-element">@github/details-menu-element</a> 1.0.13, <a href="vendor/licenses/details-menu-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/file-attachment-element">@github/file-attachment-element</a> 3.2.0, <a href="vendor/licenses/file-attachment-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/filter-input-element">@github/filter-input-element</a> 0.1.1, <a href="vendor/licenses/filter-input-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/g-emoji-element">@github/g-emoji-element</a> 1.2.0, <a href="vendor/licenses/g-emoji-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/image-crop-element">@github/image-crop-element</a> 5.0.0, <a href="vendor/licenses/image-crop-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/include-fragment-element">@github/include-fragment-element</a> 6.4.1, <a href="vendor/licenses/include-fragment-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/markdown-toolbar-element">@github/markdown-toolbar-element</a> 2.2.3, <a href="vendor/licenses/markdown-toolbar-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/relative-time-element">@github/relative-time-element</a> 5.3.1, <a href="vendor/licenses/relative-time-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/remote-input-element">@github/remote-input-element</a> 0.4.0, <a href="vendor/licenses/remote-input-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/tab-container-element">@github/tab-container-element</a> 4.9.0, <a href="vendor/licenses/tab-container-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/task-lists-element">@github/task-lists-element</a> 2.0.5, <a href="vendor/licenses/task-lists-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/text-expander-element">@github/text-expander-element</a> 2.9.4, <a href="vendor/licenses/text-expander-element-LICENSE.txt">MIT license</a></li><li><a href="https://github.com/github/typing-effect-element">@github/typing-effect-element</a> 0.1.0, <a href="vendor/licenses/typing-effect-element-LICENSE.txt">MIT license</a></li>
+<li><a href="https://github.com/github/combobox-nav">@github/combobox-nav</a> 2.3.1, <a href="vendor/licenses/combobox-nav-LICENSE.txt">MIT license</a> (used by auto-complete and text-expander)</li>
+<li><a href="https://github.com/github/mini-throttle">@github/mini-throttle</a> 2.1.1, <a href="vendor/licenses/mini-throttle-LICENSE.txt">MIT license</a> (used by auto-check)</li>
+<li><a href="https://github.com/iansan5653/dom-input-range">dom-input-range</a> 2.0.1, <a href="vendor/licenses/dom-input-range-LICENSE.txt">MIT license</a> (used by text-expander)</li></ul>
+  <p>Original list: <a href="https://github.com/github/github-elements">github/github-elements</a>.</p>
+</section>
+</main>
+<div id="status" role="status" class="visually-hidden"></div>
+<footer><p>Co-written with Tab</p></footer>
+</body>
+</html>
