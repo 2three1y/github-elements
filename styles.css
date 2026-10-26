@@ -21,7 +21,7 @@ a{color:var(--accent)}
 .demo{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .demo label{font-weight:600}
 input[type=text],textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 10px;width:100%;max-width:440px}
-input:invalid{border-color:#cf222e}
+auto-check[dirty] input:invalid{border-color:#cf222e}
 .btn,button,summary.btn{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer;display:inline-block}
 .btn:hover,button:hover{border-color:var(--accent)}
 summary{list-style:none}
