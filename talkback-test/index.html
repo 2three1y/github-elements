@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TalkBack test</title></head>
+<body>
+<main>
+<h1>TalkBack test</h1>
+<h2>1. Button pause</h2>
+<p>Button A is inside a part of the page marked plain English.</p>
+<div lang="en"><button type="button"><span>Continue with email A</span></button></div>
+<p>Button B is marked US English, like Claude.</p>
+<div><button type="button"><span>Continue with email B</span></button></div>
+<h2>2. Link pitch</h2>
+<p><a href="#one">Plain link</a></p>
+<p><a href="#two" aria-describedby="nt-2">Claude style link<span id="nt-2" hidden>(opens in new tab)</span></a></p>
+<p><a href="#three" aria-describedby="nt-3">No parentheses link<span id="nt-3" hidden>opens in new tab</span></a></p>
+<p>This sentence has a <a href="#four">link inside it</a> and keeps going.</p>
+<h2>3. Email box</h2>
+<form action="#" onsubmit="return false">
+<input type="email" id="email" name="email" autocomplete="email" aria-label="Email" placeholder="Enter your email" required>
+<button type="submit"><span>Continue with email</span></button>
+</form>
+</main>
+<footer><p>Co-written with Tab</p></footer>
+</body>
+</html>
